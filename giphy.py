@@ -6,6 +6,7 @@
 #
 # History:
 #
+# Version 1.0.2: Write text if no matches are found
 # Version 1.0.1: Auto post gif URL along with query string
 # Version 1.0.0: initial release
 #
@@ -20,7 +21,11 @@ def giphy(data, buf, args):
     search = args.replace(" ", "+")
     response = requests.get(URL % search)
     data = response.json()
-    image_url = data["data"]["image_url"]
+    try:
+        image_url = data["data"]["image_url"]
+    except TypeError:
+        image_url = "No matches found"
+
     weechat.command(buf, " /giphy %s -- %s" % (search, image_url))
 
     return weechat.WEECHAT_RC_OK
