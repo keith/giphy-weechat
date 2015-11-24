@@ -6,6 +6,7 @@
 #
 # History:
 #
+# Version 1.0.1: Auto post gif URL along with query string
 # Version 1.0.0: initial release
 #
 
@@ -20,9 +21,7 @@ def giphy(data, buf, args):
     response = requests.get(URL % search)
     data = response.json()
     image_url = data["data"]["image_url"]
-
-    weechat.buffer_set(buf, "input", image_url)
-    weechat.buffer_set(buf, "input_pos", str(len(image_url)))
+    weechat.command(buf, " /giphy %s -- %s" % (search, image_url))
 
     return weechat.WEECHAT_RC_OK
 
